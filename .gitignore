@@ -1,0 +1,14 @@
+# Ignorar entorno virtual
+venv/
+
+# Ignorar caches de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar carpetas de editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
