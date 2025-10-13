@@ -8,13 +8,13 @@ from kivy.uix.boxlayout import BoxLayout
 class MyApp(App):
     def build(self):
         #widgets
-        self.btn = Button(text="Soy un boton")
+        self.btn = Button(text="Soy un boton") #Definimos Widgets
         self.txt = Label(text="Soy una etiqueta")
         self.txt2 = Label(text="Hola Mundo")
         self.txt3 = Label(text="Ola K ase")
         
         #conexiones
-        self.btn.bind(on_press=self.saludar)
+        self.btn.bind(on_press=self.saludar) #Con bind (unir) realizamos conexiones entre eventos de un widget a metodos
         
         #layouts
         layout = BoxLayout(padding=10, spacing=10)
@@ -26,8 +26,8 @@ class MyApp(App):
         layout.add_widget(lv)
         return layout
     
-    def saludar(self, instance):
+    def saludar(self, instance): #instance es el widget que llamo al metodo
         print("HOLA MUDNOOOOO|")
         
 app = MyApp()
-app.run()
+app.run() # Tambien es valido MyApp().run()
