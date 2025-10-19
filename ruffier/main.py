@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
+from util.intrucciones import *
 
 
 # -------- Clase de botón genérico --------
@@ -24,7 +25,13 @@ class VentanaPrincipal(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        layout = BoxLayout(orientation='vertical', spacing=10, padding=20)
+        #layouts
+        layout = BoxLayout(orientation='vertical', padding=20)
+        layout_superior = BoxLayout(orientation='vertical')
+        layout_inferior = BoxLayout(orientation='vertical', size_hint_y=None)
+        
+        #widgets
+        txt = Label(text=explicacion_pantalla_inicial)
         
         self.input_nombre = TextInput(hint_text="Nombre", multiline=False, size_hint_y=None, height=40)
         self.input_edad = TextInput(hint_text="Edad", multiline=False, size_hint_y=None, height=40)
@@ -32,12 +39,17 @@ class VentanaPrincipal(Screen):
         btn = ScrButton(self, 'left', 'ventana2', text="Siguiente", size_hint_y=None, height=50)
         btn.bind(on_press=self.guardar_datos)
         
-        layout.add_widget(Label(text="Ingrese su nombre:", size_hint_y=None, height=30))
-        layout.add_widget(self.input_nombre)
-        layout.add_widget(Label(text="Ingrese su edad:", size_hint_y=None, height=30))
-        layout.add_widget(self.input_edad)
-        layout.add_widget(btn)
+        #add widget
+        layout_superior.add_widget(txt)
+        layout_inferior.add_widget(Label(text="Ingrese su nombre:", size_hint_y=None, height=30))
+        layout_inferior.add_widget(self.input_nombre)
+        layout_inferior.add_widget(Label(text="Ingrese su edad:", size_hint_y=None, height=30))
+        layout_inferior.add_widget(self.input_edad)
+        layout_inferior.add_widget(btn)
         
+        #add layout
+        layout.add_widget(layout_superior)
+        layout.add_widget(layout_inferior)        
         self.add_widget(layout)
     
     def guardar_datos(self, instance):
