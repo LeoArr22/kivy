@@ -4,7 +4,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
-from util.widgets_personalizados import ScrButton
+from kivy.uix.button import Button
+from util.widgets_personalizados import ScrButton, Seconds
 from util.intrucciones import instruccion_pantalla_esfuerzo
 
 # -------- Pantalla 4: Pulso luego de esfuerzo --------
@@ -15,12 +16,17 @@ class VentanaPulsoEsfuerzo(Screen):
         #layouts
         layout = BoxLayout(orientation='vertical', padding=20)
         layout_superior = BoxLayout(orientation='vertical')
-        layout_inferior = BoxLayout(orientation='vertical', size_hint_y=None)
+        layout_botones_crono = BoxLayout()
         formulario = BoxLayout(orientation='vertical', size_hint=(None, None), width=250, spacing=10)
-        contenedor = AnchorLayout(anchor_x='center')
+        contenedor = AnchorLayout(anchor_x='center', anchor_y='bottom', padding=[0, 20, 0, 20])
         
         #widgets
         txt = Label(text=instruccion_pantalla_esfuerzo)
+        start_button = Button(text="Temporizador 15 seg", size_hint=(1, 0.3))
+        start_button.bind(on_press=lambda instance: self.iniciar_conteo(15))
+        start_button2 = Button(text="Temporizador 45 seg", size_hint=(1, 0.3))
+        start_button2.bind(on_press=lambda instance: self.iniciar_conteo(45))
+        self.timer = Seconds(total=15)  # solo se crea una vez
         self.input_p1 = TextInput(hint_text="Pulsos en P1", multiline=False, size_hint_y=None, height=40)
         self.input_p2 = TextInput(hint_text="Pulsos en P2", multiline=False, size_hint_y=None, height=40)
         btn_sig = ScrButton(self, 'left', 'ventana_final', text="Siguiente", size_hint_y=None, height=50)
@@ -29,6 +35,10 @@ class VentanaPulsoEsfuerzo(Screen):
         
         #add widget
         layout_superior.add_widget(txt)
+        layout_botones_crono.add_widget(start_button)
+        layout_botones_crono.add_widget(start_button2)
+        layout_superior.add_widget(layout_botones_crono)
+        layout_superior.add_widget(self.timer)
         formulario.add_widget(Label(text="Ingrese la cantidad de pulsos luego del esfuerzo:", size_hint_y=None, height=30))
         formulario.add_widget(self.input_p1)
         formulario.add_widget(Label(text="Ingrese la cantidad de pulsos luego del descanso:", size_hint_y=None, height=30))
@@ -38,14 +48,20 @@ class VentanaPulsoEsfuerzo(Screen):
         
         #add layout
         contenedor.add_widget(formulario)
-        layout_inferior.add_widget(contenedor)
         
         layout.add_widget(layout_superior)
-        layout.add_widget(layout_inferior)
+        layout.add_widget(contenedor)
         self.add_widget(layout)
         
     def guardar_datos(self, instance):
         app = App.get_running_app() #Obtenemos la instancia actual
         app.p1 = self.input_p1.text #A esa instancia, le agregamos un nuevo atributo
         app.p2 = self.input_p2.text
+        
+    def iniciar_conteo(self, segundos):
+        # actualiza el total y reinicia el temporizador
+        self.timer.total = segundos
+        self.timer.current = 0
+        self.timer.text = f"Segundos pasados: {self.timer.current}"
+        self.timer.start()
         

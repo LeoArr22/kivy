@@ -27,8 +27,8 @@ class Ventana_Final(Screen):
         nombre = getattr(app, "nombre", "") #getattr ->Esto averigua si existe el atributo "nombre" en el objeto  app
         edad = getattr(app, "edad", "") #En caso de no existir, le asigna ""
         p0 = getattr(app, "p0", "")
-        p1 = getattr(app, "p0", "")
-        p2 = getattr(app, "p0", "")
+        p1 = getattr(app, "p1", "")
+        p2 = getattr(app, "p2", "")
 
         try:
             nombre, edad, p0, p1, p2 = validar_datos(nombre, edad, p0, p1, p2)
